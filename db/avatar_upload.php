@@ -1,22 +1,25 @@
-<!-- EJ MIN KOD. HÄMTAD FRÅN w3Schools. Lite modifierad för att passa mitt projekt -->
-
 <?php
 session_start();
 include 'db_connect.php';
+include '../functions/console.php';
+include 'DatabaseClass.php';
+$console = new Console;
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 /*ONLINE */
 //$target_dir = "../img/avatars/";
 
 /*OFFLINE*/
-$target_dir = "../img/avatars";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-
+$target_dir = "../img/avatars/";
+$rand = rand(1000*10000, 1000*20000);
+$target_file = $target_dir . $rand . basename($_FILES["fileToUpload"]["name"]);
 
 /* MIN KOD FÖR ATT TA UT EN URL FÖR AVATAREN */
 //$target_directory = "../img/avatars/";
 /*OFFLINE*/
 $target_directory = "img/avatars/";
-$avatar_dir = $target_directory . basename($_FILES["fileToUpload"]["name"]); 
+$avatar_dir = $target_directory . $rand . basename($_FILES["fileToUpload"]["name"]); 
 
 /*SLUT PÅ MIN KOD */
 
@@ -37,7 +40,8 @@ if(isset($_POST["submit"])) {
 
 // Check if file already exists
 if (file_exists($target_file)) {
-  echo "Sorry, file already exists.";
+   
+  echo "File already exists.";
   $uploadOk = 0;
 }
 // Check file size
@@ -57,6 +61,8 @@ if ($uploadOk == 0) {
 // If everything is ok, try to upload file
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+
+    
         //header('Location: ../profile.php');
         //echo 'File uploaded';
 
@@ -65,10 +71,8 @@ if ($uploadOk == 0) {
         Alla användare har img/avatars/default.png som standardbild. Detta ändrar standardbilden mot den nyligen uppladdade bilden. */
 
         $username = $_SESSION['username'];  
+        $id = $_SESSION['id'];
         $sql = "UPDATE members SET avatar_url='$avatar_dir' WHERE id='$id'";
-
-        include 'DatabaseClass.php';
-
         $db = new Database;
 
         $result = $db->updateAvatar($username, $avatar_dir);
