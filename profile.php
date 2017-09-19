@@ -1,6 +1,5 @@
 <!-- VISAR DEN EGNA PROFILEN -->
 <?php
-error_reporting(0);
 session_start();
 
 if(!isset($_SESSION['username'])){
@@ -9,7 +8,10 @@ if(!isset($_SESSION['username'])){
 }
 include 'overall/top.php';
 include 'db/DatabaseClass.php';
+include 'functions/console.php';
+
 $db = new Database;
+$console = new Console;
 
 $username = $_SESSION['username'];
 
@@ -22,6 +24,12 @@ $last = $profileData['last'];
 $reg_time = $profileData['reg_time'];
 $membership = $profileData['member_type'];
 $avatar = $profileData['avatar_url'];
+
+$console->log($avatar);
+
+
+//$haj = $console->log($avatar);
+
 
 ?>
 
@@ -108,7 +116,9 @@ $avatar = $profileData['avatar_url'];
     </div>
 
     <div class="col-sm-3" id="avatar_div" style="text-align: center;">
+    
         <?php echo '<img class="avatar_profile" src="'.$avatar.'"></img>'?>
+
         <form class="change_avatar" action="db/avatar_upload.php" method="post" enctype="multipart/form-data" id="upload_avatar_form">  
             <input type="file" name="fileToUpload" id="fileToUpload">
             <input id="upload_button" type="submit" value="Upload Image" name="submit">

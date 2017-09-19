@@ -1,6 +1,8 @@
 <?php
 include ('overall/top.php');
 include ('db/DatabaseClass.php');
+include ('functions/console.php');
+$console = new console;
 
 if(!isset($_GET['id'])){
 
@@ -32,6 +34,8 @@ $membertype = $db->getMemberStatus($topic_creator);
 
  // Hämtar in avatar för TS.
 $avatar = $db->getAvatar($topic_creator);
+
+$console->log($avatar);
 
 ?>
 <div class="middle_header">
